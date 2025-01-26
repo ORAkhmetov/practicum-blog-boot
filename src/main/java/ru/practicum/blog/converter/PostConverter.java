@@ -2,6 +2,7 @@ package ru.practicum.blog.converter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.mapstruct.Mapper;
@@ -23,7 +24,7 @@ public interface PostConverter {
     PostDto convertToPostDto(Post post);
 
 
-    default List<String> mapTagsToStrings(List<Tag> tags) {
+    default List<String> mapTagsToStrings(Set<Tag> tags) {
         return tags != null ? tags.stream().map(Tag::getTitle).collect(Collectors.toList()) : Collections.emptyList();
     }
 

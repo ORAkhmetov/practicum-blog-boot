@@ -9,9 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Tag {
 
     @Id
@@ -23,4 +25,8 @@ public class Tag {
 
     @ManyToMany()
     private List<Post> posts;
+
+    public Tag(String title) {
+        this.title = title;
+    }
 }

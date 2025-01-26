@@ -2,11 +2,13 @@ package ru.practicum.blog.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.blog.converter.PostConverter;
 import ru.practicum.blog.dto.CreatePostRequestDto;
 import ru.practicum.blog.dto.PostDto;
@@ -38,9 +40,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional()
     public Post createPost(CreatePostRequestDto createPostRequestDto) {
         Post post = postConverter.convertToPost(createPostRequestDto);
-        List<Tag> tagsByContent = tagService.findTagsByTitle(createPostRequestDto.getTags());
+        Set<Tag> tagsByContent = tagService.getOrCreate(createPostRequestDto.getTags());
         post.setTags(tagsByContent);
         return postRepository.save(post);
     }
