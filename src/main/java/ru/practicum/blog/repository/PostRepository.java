@@ -13,4 +13,6 @@ import ru.practicum.blog.model.Tag;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findByTags(List<Tag> tags, Pageable pageable);
+
+    Page<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

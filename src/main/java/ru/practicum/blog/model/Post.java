@@ -1,5 +1,6 @@
 package ru.practicum.blog.model;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -44,4 +45,7 @@ public class Post {
 
     @Column(name = "like_counter")
     private Long likeCounter = 0L;
+
+    @Column(name = "created_at")
+    private OffsetDateTime createdAt = OffsetDateTime.now();
 }

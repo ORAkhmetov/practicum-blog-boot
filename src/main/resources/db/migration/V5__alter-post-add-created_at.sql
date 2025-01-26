@@ -1,0 +1,2 @@
+ALTER TABLE post
+    ADD COLUMN created_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL;

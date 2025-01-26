@@ -30,7 +30,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostShortDto> getPosts(Pageable pageable) {
-        Page<Post> postListPage = postRepository.findAll(pageable);
+        Page<Post> postListPage = postRepository.findAllByOrderByCreatedAtDesc(pageable);
         return postListPage.map(postConverter::convertToPostShortDto);
     }
 
