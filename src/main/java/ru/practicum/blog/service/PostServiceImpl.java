@@ -67,4 +67,9 @@ public class PostServiceImpl implements PostService {
         Post saved = postRepository.save(post);
         return postConverter.convertToPostDto(saved);
     }
+
+    @Override
+    public void deletePost(long postId) {
+        postRepository.deleteById(postId);
+    }
 }

@@ -33,7 +33,7 @@
         <div th:if="${posts != null and !posts.isEmpty()}">
             <div class="col-12" th:each="post : ${posts}">
                 <div class="card mb-4" style="max-width: 48rem; margin: auto;">
-                    <a th:href="@{/posts/{id}(id=${post.id})}">
+                    <a th:href="@{/{id}(id=${post.id})}">
                         <img th:src="@{${post.image}}" class="card-img-top" alt="Image not found"
                              style="max-height: 250px; object-fit: cover;">
                     </a>

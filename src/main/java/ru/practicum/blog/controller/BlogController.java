@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -62,5 +63,11 @@ public class BlogController {
         PostDto postDto = postService.likePost(id);
         model.addAttribute("post", postDto);
         return "posts/show";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deletePost(@PathVariable(name = "id") Long id) {
+        postService.deletePost(id);
+        return "redirect:/";
     }
 }

@@ -18,4 +18,6 @@ public interface PostService {
     Page<PostShortDto> findPostByTag(String tag, Pageable pageable);
 
     PostDto likePost(long postId);
+
+    void deletePost(long postId);
 }
