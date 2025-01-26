@@ -9,6 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.practicum.blog.dto.CreatePostRequestDto;
 import ru.practicum.blog.dto.PostDto;
+import ru.practicum.blog.dto.PostShortDto;
 import ru.practicum.blog.model.Comment;
 import ru.practicum.blog.model.Post;
 import ru.practicum.blog.model.Tag;
@@ -21,6 +22,8 @@ public interface PostConverter {
 
     //@Mapping(target = "tags", expression = "java(mapTagsToStrings(post.getTags()))")
     @Mapping(target = "commentsSize", expression = "java(post.getComments().size())")
+    PostShortDto convertToPostShortDto(Post post);
+
     PostDto convertToPostDto(Post post);
 
 

@@ -38,7 +38,9 @@
                              style="max-height: 250px; object-fit: cover;">
                     </a>
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${post.title}">Post Title</h5>
+                        <h5 class="card-title">
+                            <a href="/{id}" th:href="@{'/' + ${post.id}}" class="text-decoration-none" th:text="${post.title}">Post Title</a>
+                        </h5>
                         <p class="card-text text-truncate" style="max-height: 4.5em; overflow: hidden;"
                            th:text="${post.content}">Post content preview</p>
                         <div class="d-flex justify-content-between">

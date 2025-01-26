@@ -7,12 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.practicum.blog.dto.CreatePostRequestDto;
 import ru.practicum.blog.dto.PostDto;
+import ru.practicum.blog.dto.PostShortDto;
 import ru.practicum.blog.service.PostService;
 
 @Controller
@@ -28,7 +30,7 @@ public class BlogController {
                           @RequestParam(name = "page", defaultValue = "0") int page,
                           @RequestParam(name = "size", defaultValue = "10") int size,
                           @RequestParam(name = "tag", required = false) String tag) {
-        Page<PostDto> posts;
+        Page<PostShortDto> posts;
         if (tag == null) {
             posts = postService.getPosts(PageRequest.of(page, size));
         } else {
@@ -49,8 +51,15 @@ public class BlogController {
     }
 
     @GetMapping("/{id}")
-    public String showPost(@PathVariable Long id, Model model) {
+    public String showPost(@PathVariable(name = "id") Long id, Model model) {
         PostDto postDto = postService.findById(id);
+        model.addAttribute("post", postDto);
+        return "posts/show";
+    }
+
+    @PatchMapping("/{id}/like")
+    public String likePost(@PathVariable(name = "id") Long id, Model model) {
+        PostDto postDto = postService.likePost(id);
         model.addAttribute("post", postDto);
         return "posts/show";
     }

@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class PostDto {
+public class PostShortDto {
 
     private long id;
 
@@ -15,9 +15,9 @@ public class PostDto {
 
     private String image;
 
-    private Long likeCounter;
-
     private List<String> tags;
 
-    private List<String> comments;
+    private Long likeCounter;
+
+    private Integer commentsSize;
 }

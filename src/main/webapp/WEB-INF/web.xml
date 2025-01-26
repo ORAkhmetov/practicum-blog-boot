@@ -5,6 +5,17 @@
                              http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
     <display-name>Spring-приложение, запускаемое в контейнере сервлетов</display-name>
+    <!-- Регистрация HiddenHttpMethodFilter -->
+    <filter>
+        <filter-name>hiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+
+    <!-- Применяем фильтр ко всем запросам -->
+    <filter-mapping>
+        <filter-name>hiddenHttpMethodFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <!-- Имя и класс основного сервлета приложения-->
         <servlet-name>dispatcher</servlet-name>

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.blog.converter.PostConverter;
 import ru.practicum.blog.dto.CreatePostRequestDto;
 import ru.practicum.blog.dto.PostDto;
+import ru.practicum.blog.dto.PostShortDto;
 import ru.practicum.blog.exception.EntityNotFoundException;
 import ru.practicum.blog.model.Post;
 import ru.practicum.blog.model.Tag;
@@ -28,9 +29,9 @@ public class PostServiceImpl implements PostService {
     private final TagService tagService;
 
     @Override
-    public Page<PostDto> getPosts(Pageable pageable) {
+    public Page<PostShortDto> getPosts(Pageable pageable) {
         Page<Post> postListPage = postRepository.findAll(pageable);
-        return postListPage.map(postConverter::convertToPostDto);
+        return postListPage.map(postConverter::convertToPostShortDto);
     }
 
     @Override
@@ -49,13 +50,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostDto> findPostByTag(String tag, Pageable pageable) {
+    public Page<PostShortDto> findPostByTag(String tag, Pageable pageable) {
         Optional<Tag> tagByTitle = tagService.findTagByTitle(tag);
         if (tagByTitle.isPresent()) {
             Page<Post> tagsContaining = postRepository.findByTags(List.of(tagByTitle.get()), pageable);
-            return tagsContaining.map(postConverter::convertToPostDto);
+            return tagsContaining.map(postConverter::convertToPostShortDto);
         } else {
             return Page.empty(pageable);
         }
+    }
+
+    @Override
+    public PostDto likePost(long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("No post found with id " + postId));
+        post.setLikeCounter(post.getLikeCounter() + 1);
+        Post saved = postRepository.save(post);
+        return postConverter.convertToPostDto(saved);
     }
 }
