@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.practicum.blog.dto.CreatePostRequestDto;
 import ru.practicum.blog.dto.PostDto;
 import ru.practicum.blog.dto.PostShortDto;
+import ru.practicum.blog.dto.UpdatePostRequestDto;
 import ru.practicum.blog.service.PostService;
 
 @Controller
@@ -56,6 +57,12 @@ public class BlogController {
         PostDto postDto = postService.findById(id);
         model.addAttribute("post", postDto);
         return "posts/show";
+    }
+
+    @PatchMapping("/{id}")
+    public String updatePost(@ModelAttribute("post") UpdatePostRequestDto updatePostRequestDto) {
+        postService.updatePost(updatePostRequestDto);
+        return "redirect:/{id}";
     }
 
     @PatchMapping("/{id}/like")

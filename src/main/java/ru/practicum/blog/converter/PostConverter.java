@@ -24,6 +24,7 @@ public interface PostConverter {
     @Mapping(target = "commentsSize", expression = "java(post.getComments().size())")
     PostShortDto convertToPostShortDto(Post post);
 
+    @Mapping(target = "tagsString", expression = "java(mapTagsToString(post.getTags()))")
     PostDto convertToPostDto(Post post);
 
 

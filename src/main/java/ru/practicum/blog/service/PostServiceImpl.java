@@ -13,6 +13,7 @@ import ru.practicum.blog.converter.PostConverter;
 import ru.practicum.blog.dto.CreatePostRequestDto;
 import ru.practicum.blog.dto.PostDto;
 import ru.practicum.blog.dto.PostShortDto;
+import ru.practicum.blog.dto.UpdatePostRequestDto;
 import ru.practicum.blog.exception.EntityNotFoundException;
 import ru.practicum.blog.model.Post;
 import ru.practicum.blog.model.Tag;
@@ -58,6 +59,18 @@ public class PostServiceImpl implements PostService {
         } else {
             return Page.empty(pageable);
         }
+    }
+
+    @Override
+    public void updatePost(UpdatePostRequestDto updatePostRequestDto) {
+        Post existPost = postRepository.findById(updatePostRequestDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("No post found with id " + updatePostRequestDto.getId()));
+        existPost.setTitle(updatePostRequestDto.getTitle());
+        existPost.setContent(updatePostRequestDto.getContent());
+        existPost.setImage(updatePostRequestDto.getImage());
+        Set<Tag> tagsByContent = tagService.getOrCreate(updatePostRequestDto.getTags());
+        existPost.setTags(tagsByContent);
+        postRepository.save(existPost);
     }
 
     @Override
