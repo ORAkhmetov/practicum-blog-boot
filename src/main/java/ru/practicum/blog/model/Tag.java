@@ -19,7 +19,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String content;
+    private String title;
 
     @ManyToMany()
     private List<Post> posts;

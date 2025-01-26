@@ -1,0 +1,1 @@
+ALTER TABLE tag DROP COLUMN post_id;
