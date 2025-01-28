@@ -27,13 +27,13 @@ public class PostController {
     private final PostService postService;
 
 
-    @GetMapping()
+    @GetMapping("/")
     public String allPost(Model model,
                           @RequestParam(name = "page", defaultValue = "0") int page,
                           @RequestParam(name = "size", defaultValue = "10") int size,
                           @RequestParam(name = "tag", required = false) String tag) {
         Page<PostShortDto> posts;
-        if (tag == null) {
+        if (tag == null || tag.isEmpty()) {
             posts = postService.getPosts(PageRequest.of(page, size));
         } else {
             posts = postService.findPostByTag(tag, PageRequest.of(page, size));
@@ -46,10 +46,10 @@ public class PostController {
         return "posts/index";
     }
 
-    @PostMapping()
+    @PostMapping("/")
     public String post(@ModelAttribute("post") CreatePostRequestDto createPostRequestDto) {
         postService.createPost(createPostRequestDto);
-        return "redirect:/post";
+        return "redirect:/post/";
     }
 
     @GetMapping("/{id}")
@@ -75,6 +75,6 @@ public class PostController {
     @DeleteMapping("/{id}")
     public String deletePost(@PathVariable(name = "id") Long id) {
         postService.deletePost(id);
-        return "redirect:/post";
+        return "redirect:/post/";
     }
 }

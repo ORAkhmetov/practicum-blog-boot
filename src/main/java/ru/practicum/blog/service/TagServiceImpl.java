@@ -29,7 +29,10 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Set<Tag> getOrCreate(List<String> content) {
-        Set<Tag> tagsByTitleIn = tagRepository.findTagsByTitleIn(new HashSet<>(content));
+        Set<String> tagsFiltered = content.stream()
+                .filter(tag -> !tag.isEmpty())
+                .collect(Collectors.toSet());
+        Set<Tag> tagsByTitleIn = tagRepository.findTagsByTitleIn(tagsFiltered);
 
         Set<String> tagSet = tagsByTitleIn.stream()
                 .map(Tag::getTitle)
