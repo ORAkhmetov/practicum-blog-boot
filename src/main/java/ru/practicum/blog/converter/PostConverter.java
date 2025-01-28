@@ -14,7 +14,7 @@ import ru.practicum.blog.model.Comment;
 import ru.practicum.blog.model.Post;
 import ru.practicum.blog.model.Tag;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CommentConverter.class})
 public interface PostConverter {
 
     @Mapping(source = "tags", target = "tags", ignore = true)
@@ -35,5 +35,9 @@ public interface PostConverter {
     // Маппинг для List<Comment> в List<String> (например, комментарии можно конвертировать в строки)
     default List<String> mapCommentsToStrings(List<Comment> comments) {
         return comments != null ? comments.stream().map(Comment::getContent).collect(Collectors.toList()) : Collections.emptyList();
+    }
+
+    default String mapTagsToString(Set<Tag> tags) {
+        return tags != null ? tags.stream().map(Tag::getTitle).collect(Collectors.joining(", ")) : null;
     }
 }

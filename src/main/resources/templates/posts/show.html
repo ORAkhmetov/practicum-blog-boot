@@ -22,7 +22,7 @@
         <div class="post-actions mb-4">
             <button class="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editPostModal">
                 Редактировать</button>
-            <form th:action="@{/{id}(id=${post.id})}" method="post" class="d-inline">
+            <form th:action="@{/post/{id}(id=${post.id})}" method="post" class="d-inline">
                 <input type="hidden" name="_method" value="DELETE" />
                 <button type="submit" class="btn btn-danger">Удалить</button>
             </form>
@@ -30,7 +30,7 @@
 
         <!-- Лайки -->
         <div class="like-section mb-4">
-            <form th:action="@{/{id}/like(id=${post.id})}" method="post">
+            <form th:action="@{/post/{id}/like(id=${post.id})}" method="post">
                 <!-- Скрытое поле, чтобы отправить PUT-запрос -->
                 <input type="hidden" name="_method" value="PATCH" />
                 <button type="submit" class="btn btn-outline-primary">
@@ -41,10 +41,13 @@
 
         <!-- Кнопка добавления комментария -->
         <div class="add-comment-section mb-4">
-            <form action="/addComment" method="post">
+            <form th:action="@{/comment}" method="post">
+                <!-- Поле для текста комментария -->
                 <div class="mb-3">
-                    <textarea name="commentText" class="form-control" placeholder="Введите текст комментария" required></textarea>
+                    <textarea name="content" class="form-control" placeholder="Введите текст комментария" required></textarea>
                 </div>
+                <!-- Скрытое поле для передачи postId -->
+                <input type="hidden" name="postId" th:value="${post.id}" />
                 <button type="submit" class="btn btn-success">Добавить комментарий</button>
             </form>
         </div>
@@ -52,23 +55,38 @@
         <!-- Список комментариев -->
         <div class="comments-section">
             <div th:each="comment : ${post.comments}" class="comment mb-3 p-3 border rounded">
-                <p th:text="${comment}"></p>
+                <!-- Текст комментария -->
+                <p class="comment-text"
+                   th:id="'comment-text-' + ${comment.id}"
+                   th:text="${comment.content}"
+                   th:onclick="'enableEdit(' + ${comment.id} + ')'">
+                </p>
 
-                <!-- Кнопки для редактирования и удаления комментариев -->
-                <div class="comment-actions">
-                    <a href="/editComment/{id}" class="btn btn-outline-warning btn-sm">Edit</a>
-                    <form action="/deleteComment/{id}" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                    </form>
-                </div>
+                <!-- Форма для редактирования комментария -->
+                <form th:action="@{/comment/{id}(id=${comment.id})}"
+                      method="post"
+                      class="edit-comment-form d-none"
+                      th:id="'edit-comment-form-' + ${comment.id}">
+                    <input type="hidden" name="_method" value="patch" />
+                    <input type="hidden" name="postId" th:value="${post.id}" />
+                    <textarea name="content" class="form-control" required></textarea>
+                </form>
+
+                <!-- Кнопка для удаления комментария -->
+                <form th:action="@{/comment/{id}(id=${comment.id})}" method="post" class="d-inline">
+                    <input type="hidden" name="_method" value="delete" />
+                    <input type="hidden" name="postId" th:value="${post.id}" />
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                </form>
             </div>
         </div>
+
     </div>
 </div>
 <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form th:action="@{/{id}(id=${post.id})}" method="post" enctype="application/x-www-form-urlencoded">
+            <form th:action="@{/post/{id}(id=${post.id})}" method="post" enctype="application/x-www-form-urlencoded">
                 <!-- Скрытое поле для передачи метода PATCH -->
                 <input type="hidden" name="_method" value="PATCH" />
 
@@ -118,5 +136,37 @@
         </div>
     </div>
 </div>
+
+<script>
+    function enableEdit(commentId) {
+        console.log("enableEdit вызван для commentId:", commentId); // Логирование для отладки
+
+        const commentText = document.getElementById(`comment-text-${commentId}`);
+        const editForm = document.getElementById(`edit-comment-form-${commentId}`);
+        const textarea = editForm.querySelector('textarea');
+
+        if (!commentText || !editForm || !textarea) {
+            console.error("Ошибка: Элемент не найден!");
+            return;
+        }
+
+        // Скрываем текст комментария и показываем форму редактирования
+        commentText.classList.add('d-none');
+        editForm.classList.remove('d-none');
+
+        // Заполняем textarea текущим текстом комментария
+        textarea.value = commentText.textContent.trim();
+
+        // Устанавливаем фокус на поле редактирования
+        textarea.focus();
+
+        // Добавляем обработчик для сохранения при нажатии Ctrl+Enter
+        textarea.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'Enter') {
+                editForm.submit();
+            }
+        });
+    }
+</script>
 </body>
 </html>

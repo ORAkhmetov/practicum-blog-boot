@@ -19,7 +19,7 @@ public class PostDto {
 
     private List<String> tags;
 
-    private List<String> comments;
+    private List<CommentInPostDto> comments;
 
     private String tagsString;
 }

@@ -17,7 +17,7 @@
     </div>
 
     <!-- Фильтрация по тегам -->
-    <form class="d-flex mb-4" method="get" th:action="@{/}">
+    <form class="d-flex mb-4" method="get" th:action="@{/post/}">
         <input
                 type="text"
                 class="form-control me-2"
@@ -33,13 +33,13 @@
         <div th:if="${posts != null and !posts.isEmpty()}">
             <div class="col-12" th:each="post : ${posts}">
                 <div class="card mb-4" style="max-width: 48rem; margin: auto;">
-                    <a th:href="@{/{id}(id=${post.id})}">
+                    <a th:href="@{/post/{id}(id=${post.id})}">
                         <img th:src="@{${post.image}}" class="card-img-top" alt="Image not found"
                              style="max-height: 250px; object-fit: cover;">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a href="/{id}" th:href="@{'/' + ${post.id}}" class="text-decoration-none" th:text="${post.title}">Post Title</a>
+                            <a href="/post/{id}" th:href="@{'/post/' + ${post.id}}" class="text-decoration-none" th:text="${post.title}">Post Title</a>
                         </h5>
                         <p class="card-text text-truncate" style="max-height: 4.5em; overflow: hidden;"
                            th:text="${post.content}">Post content preview</p>
@@ -77,14 +77,14 @@
         <nav>
             <ul class="pagination">
                 <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{/posts(size=${size}, page=${currentPage - 1}, tag=${tag})}">Previous</a>
+                    <a class="page-link" th:href="@{/post/posts(size=${size}, page=${currentPage - 1}, tag=${tag})}">Previous</a>
                 </li>
                 <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                     th:classappend="${i == currentPage} ? 'active'">
-                    <a class="page-link" th:href="@{/posts(size=${size}, page=${i}, tag=${tag})}" th:text="${i + 1}">1</a>
+                    <a class="page-link" th:href="@{/post/posts(size=${size}, page=${i}, tag=${tag})}" th:text="${i + 1}">1</a>
                 </li>
                 <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/posts(size=${size}, page=${currentPage + 1}, tag=${tag})}">Next</a>
+                    <a class="page-link" th:href="@{/post/posts(size=${size}, page=${currentPage + 1}, tag=${tag})}">Next</a>
                 </li>
             </ul>
         </nav>
@@ -95,7 +95,7 @@
 <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form th:action="@{/}" method="post" enctype="application/x-www-form-urlencoded">
+            <form th:action="@{/post/}" method="post" enctype="application/x-www-form-urlencoded">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addPostModalLabel">Добавить новый пост</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>

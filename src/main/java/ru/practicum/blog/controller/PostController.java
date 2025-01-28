@@ -20,9 +20,9 @@ import ru.practicum.blog.dto.UpdatePostRequestDto;
 import ru.practicum.blog.service.PostService;
 
 @Controller
-@RequestMapping
+@RequestMapping("/post")
 @RequiredArgsConstructor
-public class BlogController {
+public class PostController {
 
     private final PostService postService;
 
@@ -49,7 +49,7 @@ public class BlogController {
     @PostMapping()
     public String post(@ModelAttribute("post") CreatePostRequestDto createPostRequestDto) {
         postService.createPost(createPostRequestDto);
-        return "redirect:/";
+        return "redirect:/post";
     }
 
     @GetMapping("/{id}")
@@ -62,7 +62,7 @@ public class BlogController {
     @PatchMapping("/{id}")
     public String updatePost(@ModelAttribute("post") UpdatePostRequestDto updatePostRequestDto) {
         postService.updatePost(updatePostRequestDto);
-        return "redirect:/{id}";
+        return "redirect:/post/{id}";
     }
 
     @PatchMapping("/{id}/like")
@@ -75,6 +75,6 @@ public class BlogController {
     @DeleteMapping("/{id}")
     public String deletePost(@PathVariable(name = "id") Long id) {
         postService.deletePost(id);
-        return "redirect:/";
+        return "redirect:/post";
     }
 }
