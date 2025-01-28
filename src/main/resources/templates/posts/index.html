@@ -77,14 +77,14 @@
         <nav>
             <ul class="pagination">
                 <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{/post/posts(size=${size}, page=${currentPage - 1}, tag=${tag})}">Previous</a>
+                    <a class="page-link" th:href="@{/post/(size=${size}, page=${currentPage - 1}, tag=${tag})}">Previous</a>
                 </li>
                 <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                     th:classappend="${i == currentPage} ? 'active'">
-                    <a class="page-link" th:href="@{/post/posts(size=${size}, page=${i}, tag=${tag})}" th:text="${i + 1}">1</a>
+                    <a class="page-link" th:href="@{/post/(size=${size}, page=${i}, tag=${tag})}" th:text="${i + 1}">1</a>
                 </li>
                 <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/post/posts(size=${size}, page=${currentPage + 1}, tag=${tag})}">Next</a>
+                    <a class="page-link" th:href="@{/post/(size=${size}, page=${currentPage + 1}, tag=${tag})}">Next</a>
                 </li>
             </ul>
         </nav>
