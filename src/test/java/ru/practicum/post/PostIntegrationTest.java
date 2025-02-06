@@ -4,42 +4,29 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.Matchers.*;
 
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import ru.practicum.blog.PracticumBlogBootApplication;
 import ru.practicum.blog.model.Post;
 import ru.practicum.blog.repository.PostRepository;
-import ru.practicum.blog.service.PostService;
-import ru.practicum.config.TestConfig;
+import ru.practicum.config.EnablePostgresTest;
 
-@ContextConfiguration(classes = { TestConfig.class })
-@ExtendWith(SpringExtension.class)
-@WebAppConfiguration
-@Transactional
+@SpringBootTest(classes = PracticumBlogBootApplication.class)
+@EnablePostgresTest
+@ActiveProfiles("test")
 public class PostIntegrationTest {
 
     @Autowired
     private WebApplicationContext wac;
 
     @Autowired
-    private PostService postService;
-
-    @Autowired
     private PostRepository postRepository;
-
-    @Inject
-    private EntityManagerFactory entityManagerFactory;
 
     private MockMvc mockMvc;
 
@@ -50,12 +37,9 @@ public class PostIntegrationTest {
     }
 
     private void createPost(String title) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
         Post post = new Post();
         post.setTitle(title);
-        entityManager.persist(post);
-        entityManager.getTransaction().commit();
+        postRepository.save(post);
     }
 
     @Test
