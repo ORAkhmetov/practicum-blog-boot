@@ -5,8 +5,7 @@
 ## Стек технологий
 
 - **Java 21**
-- **Spring Framework**
-- **Spring MVC** для обработки HTTP-запросов
+- **Spring Boot**
 - **Spring Data JPA** для работы с базой данных
 - **Postgres** база данных
 - **JUnit 5** для тестирования
@@ -28,4 +27,22 @@
 ### 1. Клонируйте репозиторий
 
 ```bash
-git clone https://github.com/ORAkhmetov/practicum-blog.git
+git clone https://github.com/ORAkhmetov/practicum-blog-boot.git
+```
+### 2. Сборка проекта
+```bash
+./gradlew clean build
+```
+
+### 4. Настройка подключения к базе данных
+Используй переменные для подключения к базе данных Postgres
+
+`spring.datasource.url`
+
+`spring.datasource.username`
+
+`spring.datasource.password`
+### 3. Запуск jar файла
+```bash
+java -jar build/libs/practicum-blog-boot-0.0.1-SNAPSHOT.jar
+```
