@@ -8,11 +8,10 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update  # или update, если нужна авто-миграция
+      ddl-auto: none  # или update, если нужна авто-миграция
     properties:
       hibernate:
         show_sql: true
-        format_sql: true
         enable_lazy_load_no_trans: true
         cache:
           use_second_level_cache: false
