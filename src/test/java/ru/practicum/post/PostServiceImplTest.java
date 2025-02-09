@@ -119,7 +119,7 @@ class PostServiceImplTest {
         Page<Post> postPage = new PageImpl<>(List.of(post));
 
         when(tagService.findTagByTitle(tagTitle)).thenReturn(Optional.of(tag));
-        when(postRepository.findByTags(List.of(tag), pageable)).thenReturn(postPage);
+        when(postRepository.findByTags(List.of(tag.getId()), pageable)).thenReturn(postPage);
         when(postConverter.convertToPostShortDto(post)).thenReturn(new PostShortDto());
 
         // When
@@ -127,7 +127,7 @@ class PostServiceImplTest {
 
         // Then
         assertThat(result).isNotEmpty();
-        verify(postRepository).findByTags(List.of(tag), pageable);
+        verify(postRepository).findByTags(List.of(tag.getId()), pageable);
     }
 
     @Test

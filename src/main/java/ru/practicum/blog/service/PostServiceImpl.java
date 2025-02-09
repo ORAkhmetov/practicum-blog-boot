@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
     public Page<PostShortDto> findPostByTag(String tag, Pageable pageable) {
         Optional<Tag> tagByTitle = tagService.findTagByTitle(tag);
         if (tagByTitle.isPresent()) {
-            Page<Post> tagsContaining = postRepository.findByTags(List.of(tagByTitle.get()), pageable);
+            Page<Post> tagsContaining = postRepository.findByTags(List.of(tagByTitle.get().getId()), pageable);
             return tagsContaining.map(postConverter::convertToPostShortDto);
         } else {
             return Page.empty(pageable);
